@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script>
+        const ws = new WebSocket("ws://localhost:3001");
+        ws.onopen = () => console.log("WebSocket conectado");
+        ws.onmessage = (event) => console.log("Recebido:", event.data);
+    </script>
+</body>
+
+</html>
