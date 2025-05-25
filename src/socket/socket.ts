@@ -4,6 +4,7 @@ import { handleCredsUpdate } from "./handlers/credsUpdate";
 import { handleConnectionUpdate } from "./handlers/connectionUpdate";
 import { handleMessagingHistorySet } from "./handlers/messagingHistorySet";
 import { handleMessagesUpsert } from "./handlers/messagesUpsert";
+import { gptResponder } from "./handlers/gptResponder";
 
 export async function startSocket() {
   const { state, saveCreds } = await useMultiFileAuthState("baileys_auth_info");
@@ -18,6 +19,7 @@ export async function startSocket() {
   );
   sock.ev.on("messaging-history.set", handleMessagingHistorySet);
   sock.ev.on("messages.upsert", handleMessagesUpsert);
+  sock.ev.on("messages.upsert", (a) => gptResponder({messages: a.messages, sock: sock, type: a.type}));
 
   return sock;
 }
