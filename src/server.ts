@@ -1,13 +1,18 @@
 // server.ts
 import { WebSocketServer, WebSocket } from "ws";
+import { connectMongo } from "./data/db";
 
 const wss = new WebSocketServer({ port: 3001 });
 const clients: Set<WebSocket> = new Set();
 
-wss.on("connection", (ws) => {
-  clients.add(ws);
-  ws.on("close", () => clients.delete(ws));
-});
+export async function runServer() {
+  await connectMongo();
+
+  wss.on("connection", (ws) => {
+    clients.add(ws);
+    ws.on("close", () => clients.delete(ws));
+  });
+}
 
 // função para enviar para todos os clientes
 export function broadcast(data: any) {

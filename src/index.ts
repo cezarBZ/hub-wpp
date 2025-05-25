@@ -1,5 +1,10 @@
 import { startSocket } from "./socket/socket";
-import "./server"
+// import "./server";
+import { runServer } from "./server";
 
-startSocket()
+async function main() {
+  runServer();
+  startSocket();
+}
 
+main();
